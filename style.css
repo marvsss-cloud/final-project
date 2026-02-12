@@ -1,0 +1,153 @@
+/* ============================= */
+/* IMAGE MASK NAME - LEFT RIGHT */
+/* ============================= */
+
+.mask-text {
+  background-image: url("profile.jpg");
+  background-size: 250%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  animation: moveLR 15s ease-in-out infinite alternate;
+}
+
+@keyframes moveLR {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+
+/* ============================= */
+/* SCROLL FADE ANIMATION */
+/* ============================= */
+
+.fade {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s ease;
+}
+
+.fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================= */
+/* PROFILE RAIN */
+/* ============================= */
+
+.rain {
+  position: fixed;
+  top: -50px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  pointer-events: none;
+  animation: fall linear forwards;
+  z-index: 9999;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+
+/* ============================= */
+/* GLASS EFFECT CARDS */
+/* ============================= */
+
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.4s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+
+/* ============================= */
+/* SLIDE-IN ANIMATION */
+/* ============================= */
+
+.slide-item {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideIn 0.8s forwards;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* ============================= */
+/* FLOATING PROFILE IMAGE */
+/* ============================= */
+
+img {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+
+/* ============================= */
+/* LIGHT MODE */
+/* ============================= */
+
+body.light {
+  background: white;
+  color: black;
+}
+
+body.light .glass-card {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #3b82f6, transparent);
+  margin: 80px auto;
+  width: 60%;
+}
+
+/* ============================= */
+/* NEON LOADING BAR */
+/* ============================= */
+
+#loadingBar {
+  background: linear-gradient(90deg, #00f5ff, #00ff99);
+  box-shadow:
+    0 0 5px #00f5ff,
+    0 0 10px #00f5ff,
+    0 0 20px #00ff99,
+    0 0 40px #00ff99;
+  transition: width 0.2s ease;
+}
+
+#loadingScreen {
+  transition: opacity 0.5s ease;
+}
+

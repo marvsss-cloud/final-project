@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Final Project – Marvin Cruz</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-black text-white font-sans overflow-x-hidden">
+  <!-- LOADING SCREEN -->
+<div id="loadingScreen" class="fixed inset-0 bg-black flex flex-col justify-center items-center z-[9999]">
+<h1 class="text-4xl font-bold mb-6 tracking-widest text-cyan-400">
+  INITIALIZING SYSTEM...
+</h1>
+  
+  <div class="w-72 bg-gray-700 rounded-full h-3 mb-4 overflow-hidden">
+    <div id="loadingBar" class="bg-blue-500 h-3 rounded-full" style="width:0%"></div>
+  </div>
+  
+  <p id="loadingPercent">0%</p>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel">
+function App() {
+
+  const [dark, setDark] = React.useState(true);
+  const [showAge, setShowAge] = React.useState(false);
+  const [showCrush, setShowCrush] = React.useState(false);
+
+  const [typedText, setTypedText] = React.useState("");
+  const fullText = "Hi, I’m Marvin Cruz, a college student passionate about technology and interactive web design.";
+
+  React.useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
+
+  React.useEffect(() => {
+    document.body.classList.toggle("light", !dark);
+  }, [dark]);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    });
+    document.querySelectorAll(".fade").forEach(el => observer.observe(el));
+  }, []);
+
+  function makeItRain() {
+    for (let i = 0; i < 25; i++) {
+      const img = document.createElement("img");
+      img.src = "profile.jpg";
+      img.className = "rain";
+      img.style.left = Math.random() * window.innerWidth + "px";
+      img.style.animationDuration = Math.random() * 2 + 2 + "s";
+      document.body.appendChild(img);
+      setTimeout(() => img.remove(), 4000);
+    }
+  }
+
+  function handleAgeToggle() {
+    if (!showAge) {
+      const input = prompt("Enter password to view age:");
+      if (input === "2002") {
+        setShowAge(true);
+      } else {
+        alert("Wrong password!");
+      }
+    } else {
+      setShowAge(false);
+    }
+  }
+
+  return (
+    <>
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 w-full backdrop-blur-md bg-black/40 border-b border-gray-800 z-40">
+        <div className="max-w-6xl mx-auto flex justify-end items-center px-6 py-4">
+          <div className="space-x-6 text-sm">
+            <a href="#home" className="hover:text-blue-400 transition">Home</a>
+            <a href="#about" className="hover:text-blue-400 transition">About</a>
+            <a href="#location" className="hover:text-blue-400 transition">Location</a>
+          </div>
+        </div>
+      </nav>
+
+      {/* DARK MODE BUTTON */}
+      <button
+        onClick={() => setDark(!dark)}
+        className="fixed top-20 right-5 z-50 px-4 py-2 rounded-full bg-gray-800 text-sm shadow-lg hover:bg-gray-700 transition"
+      >
+        {dark ? "🌙 Dark" : "☀️ Light"}
+      </button>
+
+      {/* HERO */}
+      <section id="home" className="h-screen flex flex-col justify-center items-center text-center px-4 fade pt-24">
+        <h1 className="text-6xl md:text-8xl font-extrabold mask-text">
+          MARVIN CRUZ
+        </h1>
+
+        <p className="mt-6 max-w-xl text-gray-300 typing">
+          {typedText}
+        </p>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="py-24 px-6 text-center fade pt-24">
+        <h2 className="text-3xl font-bold mb-10">About Me</h2>
+
+        <div className="flex justify-center mb-10">
+          <img
+            src="profile.jpg"
+            onClick={makeItRain}
+            className="w-40 h-40 rounded-full object-cover border-4 border-gray-500 shadow-2xl cursor-pointer hover:scale-110 transition duration-500"
+          />
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-5">
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-user text-blue-400"></i>
+              <span>Name</span>
+            </div>
+            <span>Marvin Cruz</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-lock text-blue-400"></i>
+              <span>Age</span>
+            </div>
+            <div className="flex gap-3 items-center">
+              <span>{showAge ? "24" : "••••"}</span>
+              <button onClick={handleAgeToggle} className="text-blue-400 underline text-sm">
+                {showAge ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-location-dot text-blue-400"></i>
+              <span>Address</span>
+            </div>
+            <span>San Roque, Antipolo City</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-cake-candles text-blue-400"></i>
+              <span>Birthday</span>
+            </div>
+            <span>February 9, 2002</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-earth-asia text-blue-400"></i>
+              <span>Birth Place</span>
+            </div>
+            <span>Cainta, Rizal</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-quote-left text-blue-400"></i>
+              <span>Motto</span>
+            </div>
+            <span>"Never stop improving."</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-gamepad text-blue-400"></i>
+              <span>Hobby</span>
+            </div>
+            <span>Playing Roblox & Watching Movies</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-star text-blue-400"></i>
+              <span>Talent</span>
+            </div>
+            <span>Web Development & Creative Design</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-graduation-cap text-blue-400"></i>
+              <span>Dream Course</span>
+            </div>
+            <span>Computer Engineering</span>
+          </div>
+
+          <div className="glass-card slide-item p-5 rounded-xl">
+            <div className="flex items-center gap-3 mb-2">
+              <i className="fa-solid fa-lightbulb text-blue-400"></i>
+              <strong>Why I Chose This Course</strong>
+            </div>
+            <p>
+              I chose Computer Engineering because I want to build innovative systems,
+              improve my technical skills, and work with advanced technologies.
+            </p>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-people-group text-blue-400"></i>
+              <span>Parents</span>
+            </div>
+            <span>Divina Cruz & Marcelino Cruz</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-briefcase text-blue-400"></i>
+              <span>Parents Work</span>
+            </div>
+            <span>Mother: Housewife | Father: Dishwasher</span>
+          </div>
+
+          <div className="glass-card slide-item flex justify-between items-center p-4 rounded-xl">
+            <div className="flex items-center gap-3">
+              <i className="fa-solid fa-heart text-pink-400"></i>
+              <span>Crush</span>
+            </div>
+            <div className="flex gap-3 items-center">
+              <span>{showCrush ? "secret🤫" : "••••••••"}</span>
+              <button onClick={() => setShowCrush(!showCrush)} className="text-pink-400 underline text-sm">
+                {showCrush ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* LOCATION */}
+      <section id="location" className="py-24 px-6 bg-gray-900 fade pt-24">
+        <h2 className="text-3xl font-bold text-center mb-8">My Location</h2>
+        <div className="max-w-4xl mx-auto rounded-xl overflow-hidden border border-gray-700">
+          <iframe
+            src="https://www.google.com/maps?q=San%20Roque%20Antipolo%20City&output=embed"
+            className="w-full h-96"
+            loading="lazy">
+          </iframe>
+        </div>
+        <p className="text-center text-gray-400 mt-4">
+          San Roque, Antipolo City, Philippines
+        </p>
+      </section>
+
+      <footer className="py-6 text-center text-gray-400 text-sm fade">
+        © 2026 Marvin Cruz · BS Computer Engineering · ICCT Colleges
+      </footer>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+<!-- LOADING SCREEN SCRIPT -->
+<script>
+window.addEventListener("load", function () {
+
+  let progress = 0;
+  const bar = document.getElementById("loadingBar");
+  const percent = document.getElementById("loadingPercent");
+  const screen = document.getElementById("loadingScreen");
+
+  const interval = setInterval(() => {
+    progress++;
+    bar.style.width = progress + "%";
+    percent.textContent = progress + "%";
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        screen.style.opacity = "0";
+        screen.style.transition = "opacity 0.5s ease";
+        setTimeout(() => {
+          screen.style.display = "none";
+        }, 500);
+      }, 300);
+    }
+  }, 15);
+
+});
+</script>
+</body>
+</html>
